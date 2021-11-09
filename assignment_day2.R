@@ -23,8 +23,9 @@ weight %>%
   summarize(true_prop = true_count / total) -> real_population
 
 survey %>% 
+  filter(!is.na(macroarea)) %>% 
   group_by(country, macroarea, SEX, agegroup) %>%
-  summarize(sampled_prop = n() / 13902) -> sampled_population
+  summarize(sampled_prop = n() / 13721) -> sampled_population
   
 # Comparing
 real_population %>% 
