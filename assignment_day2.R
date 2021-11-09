@@ -41,6 +41,28 @@ real_population %>%
 
 
 # Now it's time to add the correction weights into the survey to start calculating stuff
+survey %>% 
+  left_join(correct_pop, by = c("country", "macroarea", "SEX", "agegroup")) -> survey2
+
+
+# Quick calculations to see differences with corrected weights
+
+# By Sex
+
+survey2 %>% 
+  filter(!is.na(correct_w)) %>% 
+  group_by(SEX, RISK_SQ002) %>% 
+  summarize(unweight_result = n(),
+            weight_result = sum(correct_w)) %>% 
+  ggplot(aes(y=unweight_result, x = RISK_SQ002)) + geom_point(col = "red", alpha = 0.5, size=2) +
+  geom_point(aes(y=weight_result, x = RISK_SQ002), col = "blue", alpha = 0.5, size=2) +
+  facet_wrap(~SEX)
+# Over representation of women in results for Family Risk
+
+
+
+
+
 
 
 
