@@ -48,7 +48,6 @@ survey %>%
 # Quick calculations to see differences with corrected weights
 
 # By Sex
-
 survey2 %>% 
   filter(!is.na(correct_w)) %>% 
   group_by(SEX, RISK_SQ002) %>% 
@@ -61,7 +60,19 @@ survey2 %>%
 
 
 
-
+# By Age Group
+survey2 %>% 
+  filter(!is.na(correct_w)) %>% 
+  group_by(agegroup, RISK_SQ002) %>% 
+  summarize(unweight_result = n(),
+            weight_result = sum(correct_w)) %>% 
+  pivot_longer(cols = c(unweight_result, weight_result), names_to = "type_weight", values_to = "Count") %>% 
+  mutate(type_weight = as.factor(type_weight)) %>% 
+  ggplot(aes(x = RISK_SQ002, y = Count, color = type_weight)) + 
+  geom_point(alpha = 0.5, size=2) +
+  facet_wrap(~agegroup, ncol=2, nrow = 2) +
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+# Sub-representation of old people. Over representation of 25-64 age group
 
 
 
