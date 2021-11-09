@@ -23,9 +23,11 @@ weight %>%
   summarize(true_prop = true_count / total) -> real_population
 
 survey %>% 
-  filter(!is.na(macroarea)) %>% 
+  filter(!is.na(macroarea)) %>%
+  filter(SEX != "Prefer not to answer") %>%
+  # Losing 1.8127% of answers from this filters
   group_by(country, macroarea, SEX, agegroup) %>%
-  summarize(sampled_prop = n() / 13721) -> sampled_population
+  summarize(sampled_prop = n() / 13650) -> sampled_population
   
 # Comparing
 real_population %>% 
